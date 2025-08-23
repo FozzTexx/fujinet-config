@@ -6,8 +6,8 @@ SRC_DIRS ?= ./src
 ADDL_DIR1 := ../eoslib/src
 ADDL_DIR2 := ../smartkeyslib/src
 
-ADDL_LIB1 := ../eoslib/eos.lib
-ADDL_LIB2 := ../smartkeyslib/smartkeys.lib
+ADDL_LIB1 := eos.lib
+ADDL_LIB2 := smartkeys.lib
 
 CC=zcc
 AS=zcc
