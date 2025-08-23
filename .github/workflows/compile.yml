@@ -1,23 +1,29 @@
 name: Compile (Reusable)
 
 on:
-  worksflow_call:
+  workflow_call:
     inputs:
       platform:
-        description: "Target platform (atari, coco, apple2, adam, c64, rs232)"
-	required: true
-	type: string
+        description: "Optional single platform to build"
+        required: false
+        type: string
 
 jobs:
   compile:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout source
-        uses: actions/checkout@v4
 
-      - name: Compile with defoogi
+    strategy:
+      fail-fast: false
+      matrix:
+        # If 'platform' input is empty, build all of these
+        platform: ${{ fromJSON(inputs.platform) || '["atari","apple2","adam","coco","c64","rs232"]' }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build inside Docker
         run: |
-	  docker run --rm \
-	    -v ${{ github.workspace }}:/workspace \
-	    fozztexx/defoogi:latest \
-	    make -f Makefile.${{ inputs.platform }
+          docker run --rm \
+            -v ${{ github.workspace }}:/workspace \
+            fozztexx/defoogi:latest \
+            make -f Makefile.${{ matrix.platform }
