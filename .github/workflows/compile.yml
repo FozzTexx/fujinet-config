@@ -27,4 +27,4 @@ jobs:
           docker run --rm \
             -v ${{ github.workspace }}:/workspace \
             fozztexx/defoogi:latest \
-            ls -Fla
+            bash -c "cd /workspace ; make -f Makefile.${{ matrix.platform }}"
