@@ -1,0 +1,23 @@
+name: Compile (Reusable)
+
+on:
+  worksflow_call:
+    inputs:
+      platform:
+        description: "Target platform (atari, coco, apple2, adam, c64, rs232)"
+	required: true
+	type: string
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Compile with defoogi
+        run: |
+	  docker run --rm \
+	    -v ${{ github.workspace }}:/workspace \
+	    fozztexx/defoogi:latest \
+	    make -f Makefile.${{ inputs.platform }
