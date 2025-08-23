@@ -16,7 +16,8 @@ jobs:
       fail-fast: false
       matrix:
         # If 'platform' input is empty, build all of these
-        platform: ${{ fromJSON(inputs.platform) || '["atari","apple2","adam","coco","c64","rs232"]' }}
+        platform: ${{ inputs.platform != '' && fromJSON(inputs.platform) ||
+                     fromJSON('["atari","apple2","adam","coco","c64","rs232"]') }}
 
     steps:
       - uses: actions/checkout@v4
