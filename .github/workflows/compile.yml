@@ -19,12 +19,11 @@ jobs:
         platform: ${{ inputs.platform != '' && fromJSON(inputs.platform) ||
                      fromJSON('["atari","apple2","adam","coco","c64","rs232"]') }}
 
+    container:
+      image: fozztexx/defoogi:1.4.0
+
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build inside Docker
-        run: |
-          docker run --rm \
-            -v ${{ github.workspace }}:/workspace \
-            fozztexx/defoogi:latest \
-            bash -c "cd /workspace ; make -f Makefile.${{ matrix.platform }}"
+      - name: Build
+        run: make -f Makefile.${{ matrix.platform }}
