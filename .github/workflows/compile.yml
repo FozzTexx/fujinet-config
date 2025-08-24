@@ -17,7 +17,7 @@ jobs:
       matrix:
         # If 'platform' input is empty, build all of these
         platform: ${{ inputs.platform != '' && fromJSON(inputs.platform) ||
-                     fromJSON('["atari","apple2","adam","coco","c64","rs232"]') }}
+                     fromJSON('["atari","apple2","adam","coco","c64","msdos"]') }}
 
     container:
       image: fozztexx/defoogi:1.4.0
