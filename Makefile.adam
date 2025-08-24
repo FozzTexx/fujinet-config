@@ -25,7 +25,14 @@ INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
 $(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
 	$(CC) $(LDFLAGS) $(OBJS)
-	cp autorun.ddp ../fujinet-firmware/data/webui/device_specific/BUILD_ADAM/
+
+.PHONY: dist autorun clean
+
+dist: $(TARGET_EXEC)
+	cp $< ../fujinet-platformio/data/webui/device_specific/BUILD_ADAM/
+
+# Just here so all platforms can have a `make autorun`
+autorun: $(TARGET_EXEC)
 
 # c source
 $(BUILD_DIR)/%.c.o: %.c
@@ -36,8 +43,6 @@ $(BUILD_DIR)/%.c.o: %.c
 $(BUILD_DIR)/%.asm.o: %.asm
 	$(MKDIR_P) $(dir $@)
 	$(AS) $(ASFLAGS) -c $< -o $@
-
-.PHONY: clean
 
 clean:
 	$(RM) -r autorun* $(BUILD_DIR)
