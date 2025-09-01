@@ -2,8 +2,6 @@ name: CI
 
 on:
   push:
-    branches:
-      - github-compile
   pull_request:
 
 jobs:
