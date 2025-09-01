@@ -1,0 +1,24 @@
+name: "Build matrix with defoogi"
+description: "Run make target across multiple platforms inside defoogi container"
+
+inputs:
+  platforms:
+    description: "Comma-separated list of platforms"
+    required: true
+  target:
+    description: "Make target to build"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Loop through platforms
+      shell: bash
+      env:
+        IMAGE: fozztexx/defoogi
+	VERSION: 1.4.1
+      run: |
+        for platform in $(echo "${{ inputs.platforms }}" | tr ',' ' '); do
+          echo "Building $platform..."
+          docker run --rm -v $PWD:/workspace $IMAGE:$VERSION make -f Makefile.$platform ${{ inputs.target }}
+        done

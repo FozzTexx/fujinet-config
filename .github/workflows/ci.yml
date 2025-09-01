@@ -8,4 +8,12 @@ on:
 
 jobs:
   build:
-    uses: ./.github/workflows/compile.yml
+    runs-on: ubuntu-latest
+    steps:
+      - uses actions/checkout@v4
+
+      - name: "Build CONFIG"
+        uses: ./.github/actions/build-matrix
+	with:
+	  platforms: "atari,apple2,adam,coco,c64,msdos"
+	  target: "disk"
