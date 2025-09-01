@@ -16,7 +16,7 @@ runs:
       shell: bash
       env:
         IMAGE: fozztexx/defoogi
-	VERSION: 1.4.1
+        VERSION: 1.4.1
       run: |
         for platform in $(echo "${{ inputs.platforms }}" | tr ',' ' '); do
           echo "Building $platform..."
