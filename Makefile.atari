@@ -375,7 +375,7 @@ test-atr: $(PROGRAM) dist
   $(EMUCMD) //disk $(R2R_BIN) \
 	$(POSTEMUCMD)
 
-$(R2R_BIN): $(PROGRAM)
+$(R2R_BIN): $(PROGRAM) | $(R2R_DIR)
 	mkdir -p dist
 	cp ../fujinet-tools/atari/dist/*.COM dist/ || true
 	cp ../fujinet-tools/atari/dist/*.com dist/ || true
