@@ -363,7 +363,7 @@ $(PROGRAM): $(CONFIG) $(OBJECTS) $(LIBS)
 	$(CC) -t $(CC65TARGET) $(LDFLAGS) -o $@ $(patsubst %.cfg,-C %.cfg,$^)
 
 # Create the "Ready 2 Run" executable/disk
-r2r: $(R2R_BIN)
+r2r: get_fujinet_lib $(R2R_BIN)
 
 test: $(PROGRAM)
 	$(PREEMUCMD)
