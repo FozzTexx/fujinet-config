@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses actions/checkout@v4
 
-      - name: "Build CONFIG"
+      - id: compile
         uses: ./.github/actions/build-matrix
 	with:
 	  platforms: "atari,apple2,adam,coco,c64,msdos"
