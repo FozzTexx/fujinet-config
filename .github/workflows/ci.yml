@@ -9,11 +9,29 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - adam
+          - apple2
+          - atari
+          - c64
+          - coco
+          - msdos
+
+    container:
+      image: fozztexx/defoogi:1.4.1
+
     steps:
       - uses: actions/checkout@v4
 
-      - id: compile
-        uses: ./.github/actions/build-matrix
+      - name: Build
+        run: make -f Makefile.${{ matrix.platform }} r2r
+
+      - name: Upload artifact for ${{ matrix.platform }}
+        uses: actions/upload-artifact@v4
         with:
-          platforms: "atari,apple2,adam,coco,c64,msdos"
-          target: "disk"
+          name: ${{ matrix.platform }}
+          path: r2r/${{ matrix.platform }}/**

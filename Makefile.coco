@@ -7,23 +7,29 @@ ECHO=echo
 FIRMWARE_DIR="../fujinet-firmware"
 TARGET_EXEC=config.bin
 DISK=autorun.dsk
+R2R_DIR=r2r/coco
+R2R_BIN=$(R2R_DIR)/$(DISK)
 
 $(TARGET_EXEC): check_wifi.o connect_wifi.o destination_host_slot.o hosts_and_devices.o main.o perform_copy.o select_file.o select_slot.o set_wifi.o show_info.o bar.o die.o input.o io.o mount_and_boot.o screen.o strrchr.o pause.o
 	$(CC) -o $@ check_wifi.o connect_wifi.o destination_host_slot.o hosts_and_devices.o main.o perform_copy.o select_file.o select_slot.o set_wifi.o show_info.o bar.o die.o input.o io.o mount_and_boot.o screen.o strrchr.o pause.o
 
-$(DISK): $(TARGET_EXEC)
-	$(RM) $(DISK)
-	decb dskini $(DISK)
-	decb copy -t -0 dist.coco/autoexec.bas $(DISK),AUTOEXEC.BAS
-	writecocofile $(DISK) $<
+$(R2R_BIN): $(TARGET_EXEC) | $(R2R_DIR)
+	$(RM) $@
+	decb dskini $@
+	decb copy -t -0 dist.coco/autoexec.bas $@,AUTOEXEC.BAS
+	writecocofile $@ $<
 
-dist: $(DISK)
+dist: $(R2R_BIN)
 	$(CP) $< $(FIRMWARE_DIR)/data/webui/device_specific/BUILD_COCO/
 	$(ECHO) Now, Do a Upload Filesystem task.
 
-.PHONY: autorun
-# Just here so all platforms can have a `make autorun`
-autorun: $(DISK)
+.PHONY: r2r
+
+# Create the "Ready 2 Run" executable/disk
+r2r: $(R2R_BIN)
+
+$(R2R_DIR):
+	mkdir -p $@
 
 pause.o: src/coco/pause.c
 	$(CC) -c src/coco/pause.c

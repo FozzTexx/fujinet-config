@@ -17,7 +17,8 @@ FUJINET_LIB_VERSION_DIR = $(FUJINET_LIB)/$(FUJINET_LIB_VERSION)-$(TARGETS)
 # Name of the final, single-file executable.
 # Default: name of the current dir with target name appended
 PROGRAM := config
-DISK := dist.apple2/autorun.po
+R2R_DIR := r2r/$(TARGETS)
+DISK := $(R2R_DIR)/autorun.po
 
 # Path(s) to additional libraries required for linking the program
 # Use only if you don't want to place copies of the libraries in SRCDIR
@@ -257,7 +258,7 @@ ASFLAGS += --asm-include-dir src/$(TARGETLIST)/asminc --asm-include-dir $(FUJINE
 CFLAGS += --include-dir $(FUJINET_LIB_VERSION_DIR) -DUSING_FUJINET_LIB
 
 .SUFFIXES:
-.PHONY: all test clean get_fujinet_lib zap love dist autorun
+.PHONY: all test clean get_fujinet_lib zap love dist r2r
 
 all: get_fujinet_lib $(PROGRAM)
 
@@ -317,6 +318,9 @@ get_fujinet_lib:
 $(TARGETOBJDIR):
 	$(call MKDIR,$@)
 
+$(R2R_DIR):
+	$(call MKDIR,$@)
+
 vpath %.c $(SRCDIR)/$(TARGETLIST) $(SRCDIR)
 
 $(TARGETOBJDIR)/%.o: %.c | $(TARGETOBJDIR)
@@ -345,7 +349,7 @@ test: $(PROGRAM)
 	$(EMUCMD) $<
 	$(POSTEMUCMD)
 
-$(DISK): $(PROGRAM)
+$(DISK): $(PROGRAM) | $(R2R_DIR)
 	cp dist.apple2/bootable.po $@
 	./dist.apple2/add-file.sh $@ config config.system
 
@@ -365,8 +369,8 @@ dist: $(DISK)
     fi ; \
 	)
 
-# Just here so all platforms can have a `make autorun`
-autorun: $(DISK)
+# Create the "Ready 2 Run" executable/disk
+r2r: $(DISK)
 
 gendebug: $(PROGRAM)
 	@echo "Generating debug.scr script for AppleWin"
