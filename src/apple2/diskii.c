@@ -1,8 +1,10 @@
 #ifdef BUILD_APPLE2
 #include "diskii.h"
 #ifndef __ORCAC__
+#ifndef BUILD_APPLE2CDA
 #include <peekpoke.h>
 #include <apple2.h>
+#endif /* BUILD_APPLE2CDA */
 #endif
 #include <string.h>
 
@@ -47,6 +49,7 @@ static void enable_diskii(uint8_t slot, uint8_t drive)
 {
   uint16_t offset;
 
+#ifndef BUILD_APPLE2CDA
   if (get_ostype() == APPLE_IIIEM) // Satan Mode
   {
     if (drive == 1)
@@ -62,18 +65,21 @@ static void enable_diskii(uint8_t slot, uint8_t drive)
       POKE(0xC0D1,0);
     }
   }
+#endif /* BUILD_APPLE2CDA */
 
   offset = 0xC080 + (slot << 4);
   POKE(offset + DISKII_SEL_DRIVE1 + ((drive - 1) & 1), 0);
   POKE(offset + DISKII_MOTOR_ON, 0);
   POKE(offset + DISKII_MOTOR_OFF, 0);
 
+#ifndef BUILD_APPLE2CDA
   if (get_ostype() == APPLE_IIIEM) // Satan Mode
   {
     POKE(0xC0D5,0); // all drives off
     POKE(0xC0D2,0);
     POKE(0xC0D0,0);
   }
+#endif /* BUILD_APPLE2CDA */
   
   return;
 }

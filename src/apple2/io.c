@@ -12,9 +12,11 @@
 #include <apple2gs.h>
 #include <texttool.h>
 #else
+#ifndef BUILD_APPLE2CDA
 #include <conio.h>
 #include <apple2.h>
 #include <peekpoke.h> // For the insanity in io_boot()
+#endif /* BUILD_APPLE2CDA */
 #endif
 #include <stdlib.h>
 #include "../globals.h"
@@ -273,7 +275,7 @@ void io_boot(void)
 {
   #ifdef __ORCAC__
   sp_done();
-	#ifndef BUILD_A2CDA
+	#ifndef BUILD_APPLE2CDA
   WriteChar(0x8c);  // Clear screen
   WriteChar(0x92);  // Set 80 col
   WriteChar(0x86);  // Cursor on

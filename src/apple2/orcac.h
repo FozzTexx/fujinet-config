@@ -16,9 +16,9 @@
 /* Perform all lint checks but treat them as warnings */
 /* #pragma lint -1;0 */
 
-#ifdef BUILD_A2CDA
+#ifdef BUILD_APPLE2CDA
 #pragma cda "FujiNet Config" CDAentry CDAshutdown
-#endif /* BUILD_A2CDA */
+#endif /* BUILD_APPLE2CDA */
 
 #define POKE(addr,val)     (*(unsigned char*) (addr) = (val))
 #define PEEK(addr)         (*(unsigned char*) (addr))

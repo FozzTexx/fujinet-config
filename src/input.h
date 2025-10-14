@@ -58,8 +58,12 @@ void input_select_slot_build_eos_directory_label(char *c);
 #endif /* BUILD_ADAM */
 
 #if defined(BUILD_APPLE2) || defined(BUILD_ATARI)
+#ifdef BUILD_APPLE2CDA
+#define KEY_ABORT 0x1b
+#else /* ! BUILD_APPLE2CDA */
 #include <conio.h>
 #define KEY_ABORT CH_ESC
+#endif /* BUILD_APPLE2CDA */
 #endif
 
 #ifdef BUILD_C64

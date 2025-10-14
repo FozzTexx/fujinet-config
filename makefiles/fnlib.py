@@ -318,7 +318,9 @@ class LibLocator:
       if os.path.exists(os.path.join(idir, "fujinet-fuji.h")):
         self.MV.FUJINET_LIB_INCLUDE = idir
         return
-    raise ValueError("Unable to find include directory", self.MV.FUJINET_LIB_DIR)
+
+    if not self.skipIfMissing:
+      raise ValueError("Unable to find include directory", self.MV.FUJINET_LIB_DIR)
 
     return
 

@@ -73,7 +73,7 @@ void run(void)
 		#endif
 		case DONE:
 			done();
-			#ifdef BUILD_A2CDA
+			#ifdef BUILD_APPLE2CDA
 				return;
 			#endif
 			break;

@@ -1,11 +1,11 @@
-CC_DEFAULT ?= cmoc
-AS_DEFAULT ?= $(CC_DEFAULT)
+CC_DEFAULT ?= vc
+AS_DEFAULT ?= vc
 LD_DEFAULT ?= $(CC_DEFAULT)
-AR_DEFAULT = lwar
+AR_DEFAULT ?= $(AS_DEFAULT)
 
 include $(MWD)/tc-common.mk
 
-CFLAGS += --intdir=$(OBJ_DIR)
+CFLAGS +=
 ASFLAGS +=
 LDFLAGS +=
 
@@ -29,17 +29,17 @@ define library-flag
 endef
 
 define link-lib
-  $(AR) -a -r $@ $^
+  $(AR) -x$1 $2
 endef
 
 define link-bin
-  $(LD) -o $1 $(LDFLAGS) $2 $(LIBS) 2>&1
+  $(LD) $(LDFLAGS) $2 $(LIBS) -o $1
 endef
 
 define compile
-  $(CC) -c $(CFLAGS) --deps=$(OBJ_DIR)/$(basename $(notdir $2)).d -o $1 $2 2>&1
+  $(CC) -c $(CFLAGS) -o $1 $2 2>&1 | sed -e 's/\(error\|warning\) \([0-9]\+\) in line \([0-9]\+\) of "\([^"]\+\)":/\4:\3:\1 \2:/'
 endef
 
 define assemble
-  $(AS) -c $(ASFLAGS) -o $1 $2 2>&1 | sed -e 's/^\(.*\)(\([0-9][0-9]*\)) :/\1:\2:/'
+  $(AS) $(ASFLAGS) -o=$1 $2
 endef

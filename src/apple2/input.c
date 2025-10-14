@@ -6,11 +6,13 @@
 #ifdef __ORCAC__
 #include <coniogs.h>
 #include <apple2gs.h>
-#else
+#else /* ! __ORCAC__ */
+#ifndef BUILD_APPLE2CDA
 #include <conio.h>
 #include <apple2.h>
 #include <peekpoke.h>
-#endif
+#endif /* BUILD_APPLE2CDA */
+#endif /* __ORCAC__ */
 #include <string.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -100,13 +102,16 @@ void input_line(unsigned char x, unsigned char y, unsigned char o, char *c, unsi
     cputc('_');
     gotox(x + i);
     a = cgetc();
+#ifndef BUILD_APPLE2CDA
     if (ostype == APPLE_IIIEM)   // check for Apple3 lowercase
       if (!(PEEK(0xc008)&0x02) && (PEEK(0xc008)&0x08)) // test for shift or alpha lock key not pressed
         if ((a > 63) && (a < 96))
           a += 32;
+#endif /* BUILD_APPLE2CDA */
     switch (a)
     {
     case KEY_ESCAPE:
+#ifndef BUILD_APPLE2CDA
       if (ostype == APPLE_II)
       {
         if (uc == 0)
@@ -114,6 +119,7 @@ void input_line(unsigned char x, unsigned char y, unsigned char o, char *c, unsi
         else
           uc = 0;
       }
+#endif /* BUILD_APPLE2CDA */
       break;
     case KEY_LEFT_ARROW:
     case KEY_DELETE:

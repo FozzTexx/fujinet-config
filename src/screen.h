@@ -8,7 +8,9 @@
 #include "typedefs.h"
 
 #if defined(BUILD_APPLE2) || defined(BUILD_PMD85)
+#ifndef BUILD_APPLE2CDA
 #include <conio.h>
+#endif /* BUILD_APPLE2CDA */
 #endif /* BUILD_APPLE2 || BUILD_PMD85 */
 
 // Used to identify what screen we're currently displaying. The set_cursor() method uses this so it know what screen we're on so it

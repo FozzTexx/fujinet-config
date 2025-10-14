@@ -1,5 +1,5 @@
 PRODUCT = config
-PLATFORMS = coco apple2 atari c64 adam pmd85
+#PLATFORMS = coco apple2 atari c64 adam pmd85
 
 # Not currently in buildable state
 #PLATFORMS += dragon
@@ -9,7 +9,7 @@ PLATFORMS = coco apple2 atari c64 adam pmd85
 #PLATFORMS += rc2014
 
 # Require special toolchains
-#PLATFORMS += apple2cda
+PLATFORMS += apple2cda
 #PLATFORMS += apple2gs
 
 # You can run 'make <platform>' to build for a specific platform,
@@ -42,7 +42,8 @@ PLATFORM_COMBOS = \
   atarixe+=atari \
   msxrom+=msx \
   msxdos+=msx \
-  dragon+=coco
+  dragon+=coco \
+  apple2cda+=apple2
 
 include makefiles/toplevel-rules.mk
 
@@ -97,3 +98,8 @@ CFLAGS_EXTRA_C64 = -DUSE_EDITSTRING
 # CoCo customization
 
 CFLAGS_EXTRA_COCO = -Wno-assign-in-condition
+
+########################################
+# Apple2CDA customization
+
+CFLAGS_EXTRA_APPLE2CDA = -DBUILD_APPLE2

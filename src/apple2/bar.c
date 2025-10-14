@@ -9,7 +9,9 @@
 #ifdef __ORCAC__
 #include <coniogs.h>
 #else
+#ifndef BUILD_APPLE2CDA
 #include <conio.h>
+#endif /* BUILD_APPLE2CDA */
 #endif
 
 #define CURRENT_LINE (*(char**)0x28)
