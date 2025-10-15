@@ -86,7 +86,7 @@ bool any_slot_occupied()
   return occupied;
 }
 
-void show_status(char *msg)
+void show_status(const char *msg)
 {
   vdp_vfill(0x1400, 0x00, 256);
   gotoxy(0, 20);
