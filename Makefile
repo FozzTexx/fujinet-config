@@ -21,13 +21,18 @@ SRC_DIRS = src src/%PLATFORM%
 # - undefined, no fujinet-lib will be used
 FUJINET_LIB = https://github.com/FozzTexx/fujinet-lib-experimental.git
 
+# Some platforms don’t use FUJINET_LIB; set this to allow builds to continue
+# even if the library isn’t present.
+FUJINET_LIB_OPTIONAL = 1
+
 # Define extra dirs ("combos") that expand with a platform.
 # Format: platform+=combo1,combo2
 PLATFORM_COMBOS = \
   c64+=commodore \
   atarixe+=atari \
   msxrom+=msx \
-  msxdos+=msx
+  msxdos+=msx \
+  dragon+=coco
 
 include makefiles/toplevel-rules.mk
 
@@ -66,8 +71,13 @@ coco/disk-post::
 
 A2_LINKER_CFG = src/apple2/config.cfg
 EXECUTABLE_EXTRA_DEPS_APPLE2 = $(A2_LINKER_CFG)
-CFLAGS_EXTRA_APPLE2 = -DUSING_FUJINET_LIB
 LDFLAGS_EXTRA_APPLE2 = -C $(A2_LINKER_CFG)
+WITHOUT_PRODOS_BOOT = dist.apple2/bootable.po
+
+apple2/disk-post::
+	cp $(WITHOUT_PRODOS_BOOT) $(BUILD_DISK)
+	ac -as $(BUILD_DISK) $(PRODUCT_BASE).SYSTEM < $(BUILD_EXEC)
+#	ac -p $(BUILD_DISK) $(PRODUCT_BASE).SYSTEM SYS 0x2000 < $(BUILD_EXEC)
 
 ########################################
 # Atari customization
@@ -78,6 +88,18 @@ EXTRA_INCLUDE_ATARI = src/atari/asminc
 # Commodore 64 customization
 
 CFLAGS_EXTRA_C64 = -DUSE_EDITSTRING
+
+########################################
+vvvvvvvvvvvvvvvvvvvv
+# CoCo customization
+
+CFLAGS_EXTRA_COCO = -Wno-assign-in-condition
+
+########################################
+# Adam customization
+^^^^^^^^^^^^^^^^^^^^
+
+LDFLAGS_EXTRA_ADAM = -lndos
 
 ########################################
 # MSX customization
