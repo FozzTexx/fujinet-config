@@ -123,51 +123,10 @@ void select_slot_done()
     strcat(filename,path);
 
     fuji_open_directory_filter(selected_host_slot,path,filter);
-
     fuji_set_directory_position(pos);
-
     fuji_read_directory(255-(unsigned char)strlen(path), 0, response);
     strcat(filename, response);
-
-#ifdef BUILD_MSDOS
-    pause(6);
-#endif
     fuji_set_device_filename(mode, selected_host_slot, selected_device_slot, filename);
-
-#ifdef OBSOLETE
-    fuji_set_directory_position(pos);
-
-    fuji_read_directory(DIR_MAX_LEN, 0, response);
-    memcpy(deviceSlots[selected_device_slot].file, response, DIR_MAX_LEN);
-    deviceSlots[selected_device_slot].mode=mode;
-    deviceSlots[selected_device_slot].hostSlot=selected_host_slot;
-
-#ifndef BUILD_ATARI
-    fuji_put_device_slots(&deviceSlots[0], NUM_DEVICE_SLOTS);
-#endif
-
-#ifdef BUILD_APPLE2
-    // Try to mount the disk and error on failure
-    /* Disabled for now because it ends up mounting now and during
-       mount and boot phase which could mean extra looong time to
-       wait. Maybe add a new fuji command to check if disk is
-       already mounted for use during mount and boot?
-    mnt = io_mount_disk_image(selected_device_slot, mode);
-
-    if (mnt)
-    {
-      // Display error for a moment
-      screen_error("ERROR MOUNTING DISK");
-      for (i = 0; i < 4000; i++)
-        mnt = true; // Do nothing to let the message display
-      io_umount_disk_image(selected_device_slot);
-      memset(deviceSlots[selected_device_slot].file,0,FILE_MAXLEN);
-      deviceSlots[selected_device_slot].hostSlot=0xFF;
-      io_put_device_slots(&deviceSlots[0]);
-    }*/
-#endif
-#endif // OBSOLETE
-
     fuji_close_directory();
   }
 
